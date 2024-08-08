@@ -6,9 +6,17 @@ var userRoutes = require('./routes/userRoutes');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT;
+const cookieParser = require('cookie-parser')
+app.use(cookieParser())
+
 app.use(express.json());
 
-app.use(cors());
+app.use(cors(
+    {
+        origin:["http://localhost:5173"],
+        credentials:true
+    }
+));
 app.use('/auth', userRoutes);
 
 const start = async () => {
@@ -23,10 +31,6 @@ const start = async () => {
         })
 
         app.listen(port, console.log(`app listening on port : ${port}`))
-
-        // app.get('/auth',authenticate, (req, res) => {
-        // res.send('Welcome to the login route');
-        // });
         
     } catch (error) {
         console.log(error)
